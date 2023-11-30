@@ -1,0 +1,38 @@
+name: Deploy function
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Use node.js v18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Deploy function
+        id: sls-func
+        uses: yc-actions/yc-sls-function@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          bucket: ${{ secrets.BUCKET }}
+          folder-id: ${{ secrets.FOLDER_ID }}
+          function-name: 'honda-fn-v2'
+          runtime: 'nodejs18'
+          execution-timeout: '60'
+          memory: '128Mb'
+          entrypoint: '.dist/index.handler'
+          environment: |
+            API_BASE_URL = ${{ secrets.API_BASE_URL }}
+            API_TOKEN = ${{ secrets.API_TOKEN }}
+          include: |
+            ./.dist
+            package.json
+          exclude: |
+            **/*.ts
