@@ -28,9 +28,6 @@ jobs:
           execution-timeout: '60'
           memory: '128Mb'
           entrypoint: '.dist/index.handler'
-          environment: |
-            API_BASE_URL = ${{ secrets.API_BASE_URL }}
-            API_TOKEN = ${{ secrets.API_TOKEN }}
           include: |
             ./.dist
             package.json
