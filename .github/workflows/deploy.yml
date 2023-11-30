@@ -27,7 +27,7 @@ jobs:
           runtime: 'nodejs18'
           execution-timeout: '60'
           memory: '128Mb'
-          entrypoint: '.dist/index.handler'
+          entrypoint: '.build/index.handler'
           include: |
             ./.build
             package.json
