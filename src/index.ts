@@ -1,4 +1,6 @@
-export const handler: Record<string, any> = (event: any) => {
+import { TUserRequest } from './types';
+
+export const handler: Record<string, any> = (event: TUserRequest) => {
     const { version, session, request } = event;
 
     let text = 'Привет! Я повторю все, что вы мне скажите.';
